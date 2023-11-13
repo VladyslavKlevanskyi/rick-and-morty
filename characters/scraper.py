@@ -1,3 +1,5 @@
+from django.db import IntegrityError
+
 import init_django_orm  # noqa: F401
 
 import requests
@@ -31,7 +33,10 @@ def scrape_characters() -> list[Character]:
 
 def save_characters(characters: list[Character]) -> None:
     for character in characters:
-        character.save()
+        try:
+            character.save()
+        except IntegrityError:
+            print(f"Character with 'api_id': {character.api_id} already exists in DB!")
 
 
 def async_characters_with_api() -> None:
