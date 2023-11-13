@@ -1,7 +1,7 @@
 from celery import shared_task
-from characters.models import Character
+from characters.scraper import async_characters_with_api
 
 
 @shared_task
-def count_characters() -> int:
-    return Character.objects.count()
+def run_sync_with_api() -> None:
+    async_characters_with_api()
